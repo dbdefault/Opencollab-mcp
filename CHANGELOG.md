@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Changes merged since v0.6.1.
 
 ### Added
+- Pure `parse_github_url` helper for repository, issue and pull request URLs, with validation and no network calls ([#185](https://github.com/prakhar1605/Opencollab-mcp/issues/185)).
 - `--version` and `-V` command-line flags ([#51](https://github.com/prakhar1605/Opencollab-mcp/pull/51))
 - `/health` endpoint, plus cache TTL and eviction tests ([#44](https://github.com/prakhar1605/Opencollab-mcp/pull/44))
 - Difficulty option for `opencollab_match_me`, matching `find_issues` ([#39](https://github.com/prakhar1605/Opencollab-mcp/pull/39))
