@@ -178,4 +178,3 @@ def register(mcp: MCPServer) -> None:
                 "and call opencollab_find_issues with it."
             )
         return json.dumps(payload, indent=2)
-
