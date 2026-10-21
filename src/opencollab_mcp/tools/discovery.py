@@ -35,6 +35,7 @@ def register(mcp: MCPServer) -> None:
         searches use the "help wanted" label. Returns up to `limit` (default 15,
         max 30) issues from non-archived public repos created within `max_age_days`
         (default 90, range 1-365). Increase it to find older open issues.
+        exclude_repos optionally omits up to 10 repositories in owner/name format.
         Supports sorting by newest (default), recently_updated, or least_discussed.
         Each issue includes updated_days_ago (days since its last activity),
         or null when its update timestamp is missing or unparseable.
@@ -56,6 +57,7 @@ def register(mcp: MCPServer) -> None:
             f"created:>{since}",
             "is:public",
             "archived:false",
+            *(f"-repo:{repo}" for repo in params.exclude_repos),
         ]
         sort_params = _FIND_ISSUES_SORT_MAPPINGS.get(
             params.sort, {"sort": "created", "order": "desc"}
