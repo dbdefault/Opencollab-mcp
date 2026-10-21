@@ -10,10 +10,13 @@ from opencollab_mcp.server import build_server
 from tests.test_tools import _call_tool_compat, _extract_text
 
 
-@pytest.mark.parametrize("timestamp, expected", [
-    ("2026-01-08T12:00:00Z", 2),
-    (None, None),
-])
+@pytest.mark.parametrize(
+    "timestamp, expected",
+    [
+        ("2026-01-08T12:00:00Z", 2),
+        (None, None),
+    ],
+)
 async def test_find_issues_updated_days_ago(monkeypatch, mock_github, timestamp, expected):
     class FixedDatetime(datetime):
         @classmethod
@@ -26,7 +29,9 @@ async def test_find_issues_updated_days_ago(monkeypatch, mock_github, timestamp,
         item["updated_at"] = timestamp
     mock_github({"/search/issues": {"total_count": 1, "items": [item]}})
     result = await _call_tool_compat(
-        build_server(), "opencollab_find_issues", {"params": {"language": "Python"}},
+        build_server(),
+        "opencollab_find_issues",
+        {"params": {"language": "Python"}},
     )
     issue = json.loads(_extract_text(result))["issues"][0]
     assert issue["updated_days_ago"] == expected
