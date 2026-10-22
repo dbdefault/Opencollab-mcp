@@ -11,7 +11,7 @@
 
 6 focused tools. Works with Claude Desktop, Cursor, VS Code, or any MCP-compatible client.
 
-[Changelog](CHANGELOG.md)
+[Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md)
 
 </div>
 
