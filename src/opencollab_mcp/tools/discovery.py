@@ -36,6 +36,8 @@ def register(mcp: MCPServer) -> None:
         max 30) issues from non-archived public repos created within `max_age_days`
         (default 90, range 1-365). Increase it to find older open issues.
         Supports sorting by newest (default), recently_updated, or least_discussed.
+        Optional `scope` narrows the search to one organization/user (`owner`)
+        or one repository (`owner/name`); language remains required.
         Each issue includes updated_days_ago (days since its last activity),
         or null when its update timestamp is missing or unparseable.
         """
@@ -57,6 +59,14 @@ def register(mcp: MCPServer) -> None:
             "is:public",
             "archived:false",
         ]
+        if params.scope:
+            # GitHub search: org: matches orgs (and often personal accounts);
+            # repo:owner/name scopes to a single repository.
+            if "/" in params.scope:
+                query_parts.append(f"repo:{params.scope}")
+            else:
+                query_parts.append(f"org:{params.scope}")
+
         sort_params = _FIND_ISSUES_SORT_MAPPINGS.get(
             params.sort, {"sort": "created", "order": "desc"}
         )
