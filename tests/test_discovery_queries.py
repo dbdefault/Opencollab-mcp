@@ -314,3 +314,23 @@ async def test_find_issues_no_scope_unchanged(server, captured_queries):
     assert "is:issue" in tokens
     assert "is:public" in tokens
     assert "archived:false" in tokens
+
+@pytest.mark.asyncio
+async def test_find_issues_excludes_requested_repositories(server, captured_queries):
+    await _call(server, "opencollab_find_issues", {"params": {
+        "language": "Python", "exclude_repos": ["a/b", "example-org/repo.name"],
+    }})
+    assert captured_queries
+    assert "-repo:a/b" in captured_queries[0].split()
+    assert "-repo:example-org/repo.name" in captured_queries[0].split()
+    assert "no:assignee" in captured_queries[0].split()
+
+
+@pytest.mark.asyncio
+async def test_empty_repository_exclusions_preserve_query(server, captured_queries):
+    await _call(server, "opencollab_find_issues", {"params": {"language": "Python"}})
+    await _call(server, "opencollab_find_issues", {"params": {
+        "language": "Python", "exclude_repos": [],
+    }})
+    assert len(captured_queries) == 2
+    assert captured_queries[0] == captured_queries[1]
