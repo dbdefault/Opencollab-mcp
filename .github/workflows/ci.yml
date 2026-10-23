@@ -8,6 +8,9 @@ on:
 
 jobs:
   test:
+    # Ubuntu keeps the plain `test (3.x)` names that branch protection requires;
+    # Windows and macOS show up as additional, non-required checks.
+    name: ${{ matrix.os == 'ubuntu-latest' && format('test ({0})', matrix.python-version) || format('test ({0}, {1})', matrix.os, matrix.python-version) }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
